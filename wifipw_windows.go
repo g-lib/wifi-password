@@ -1,16 +1,16 @@
 package wifipw
 
 import (
-	"bytes"
-	"fmt"
+	"errors"
 	"os/exec"
+	"regexp"
 )
 
-func WIFIPassword(ssid string) (string,error) {
-	output, err := exec.Command("cmd", "/C", "netsh","wlan",
-	"show","profile","name="+ssid,"key=clear").CombinedOutput()
-	if err != nil{
-		return "",err
+func WIFIPassword(ssid string) (string, error) {
+	output, err := exec.Command("cmd", "/C", "netsh", "wlan",
+		"show", "profile", "name="+ssid, "key=clear").CombinedOutput()
+	if err != nil {
+		return "", err
 	}
 	ret := regexp.MustCompile(`^\s*Key Content\s*: (.+)\s*$`).FindStringSubmatch(string(output))
 	if len(ret) < 1 {
@@ -20,9 +20,7 @@ func WIFIPassword(ssid string) (string,error) {
 }
 
 func WIFISSID() (string, error) {
-	var stdout bytes.Buffer
-	cmdStr := "netsh wlan show interface"
-	cmd,err := exec.Command("cmd", "/C", "netsh","wlan","show","interface")..CombinedOutput()
+	cmd, err := exec.Command("cmd", "/C", "netsh", "wlan", "show", "interface").CombinedOutput()
 	if err != nil {
 		return "", err
 	}

@@ -2,8 +2,10 @@ package wifipw
 
 import (
 	"bytes"
-	"fmt"
+	"errors"
 	"os/exec"
+	"regexp"
+	"strings"
 )
 
 func WIFIPassword(ssid string) (string, error) {
@@ -21,10 +23,10 @@ func WIFISSID() (name string, err error) {
 	cmd := exec.Command("sh", "-c", cmdStr)
 	cmd.Stdout = &stdout
 	if err := cmd.Run(); err != nil {
-		return "", errors.New(stderr.String())
+		return "", err
 	}
 	stdoutStr := stdout.String()
-	if strings.Contains(stdout, "AirPort: Off") {
+	if strings.Contains(stdoutStr, "AirPort: Off") {
 		return "", errors.New("Wi-Fi is turned off")
 	}
 	ret := regexp.MustCompile(`^\s*SSID: (.+)\s*$`).FindStringSubmatch(stdout.String())
