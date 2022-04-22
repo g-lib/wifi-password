@@ -9,7 +9,7 @@ import (
 )
 
 func usage() {
-	fmt.Fprintf(os.Stderr, `wifipw is a command to get the password of current wifi.
+	fmt.Fprintf(os.Stderr, `wifipw is a command to get the password of current WIFI.
 usage: [sudo] wifipw 
 `)
 	flag.PrintDefaults()
@@ -22,5 +22,5 @@ func main() {
 	flag.Usage = usage
 	flag.Parse()
 	ssid, password, _ := wifipw.GetWIFIPassword()
-	fmt.Printf("SSID:%s\nPassword:%s\n", ssid, password)
+	fmt.Printf("WIFI名称标识(SSID):%s\n密码(Password):%s\n", ssid, password)
 }
