@@ -18,12 +18,14 @@ func WIFIPassword(ssid string) (password string, err error) {
 	for _, p := range paths {
 		output, err := exec.Command("sudo", "cat", p).CombinedOutput()
 		if err == nil {
-			outputStr = string(output)
+			outputStr = strings.TrimSpace(string(output))
 			break
+		} else {
+			outputStr = ""
 		}
 	}
 	if outputStr == "" {
-		return "", errors.New("could not get password")
+		return "", errors.New("could not get password. please make sure you have the root permission")
 	}
 	ret := regexp.MustCompile(`(?:psk|password)=(.+)`).FindStringSubmatch(outputStr)
 	if len(ret) < 1 {

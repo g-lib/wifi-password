@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"log"
 	"os"
 
 	wifipw "github.com/g-lib/wifi-password"
@@ -21,6 +22,10 @@ usage: [sudo] wifipw
 func main() {
 	flag.Usage = usage
 	flag.Parse()
-	ssid, password, _ := wifipw.GetWIFIPassword()
-	fmt.Printf("WIFI名称标识(SSID):%s\n密码(Password):%s\n", ssid, password)
+	ssid, password, err := wifipw.GetWIFIPassword()
+	if err != nil {
+		log.Fatalln(err)
+	} else {
+		fmt.Printf("WIFI名称标识(SSID):%s\n密码(Password):%s\n", ssid, password)
+	}
 }
